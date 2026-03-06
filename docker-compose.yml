@@ -1,0 +1,75 @@
+services:
+  postgres:
+    image: postgres:13
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  airflow-init:
+    image: apache/airflow:2.7.0
+    env_file:
+      - .env
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    depends_on:
+      - postgres
+    command: db init
+    restart: "no"
+
+  airflow-webserver:
+    image: apache/airflow:2.7.0
+    env_file:
+      - .env
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    command: webserver
+
+  airflow-scheduler:
+    image: apache/airflow:2.7.0
+    env_file:
+      - .env
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+    depends_on:
+      - postgres
+    command: scheduler
+
+  spark:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.spark
+    image: bitnami/spark:3
+    environment:
+      - SPARK_MODE=master
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+    ports:
+      - "4040:4040"
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.streamlit
+    volumes:
+      - ./streamlit:/app
+      - ./data:/app/data
+    ports:
+      - "8501:8501"  
+
+volumes:
+  postgres_data:
