@@ -1,8 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
-    rand, floor, lit, concat, monotonically_increasing_id,
-    date_add, to_timestamp, array, element_at, when, col, udf,
-    month, year, dayofmonth
+    rand, floor, lit, concat, when, col, udf,
+    date_add, to_timestamp, month, year, dayofmonth
 )
 from pyspark.sql.functions import round as spark_round
 from pyspark.sql.types import StringType
