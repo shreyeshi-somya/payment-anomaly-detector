@@ -186,7 +186,7 @@ holiday_spike = df.filter(
     (month(col("timestamp")) == 12) & 
     (dayofmonth(col("timestamp")) <= 14)
 )
-df = df.union(holiday_spike)å
+df = df.union(holiday_spike)
 
 print(df.count())
 df.write.mode("overwrite").parquet("/app/data/transactions")
