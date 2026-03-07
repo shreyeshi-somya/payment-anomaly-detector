@@ -60,6 +60,7 @@ services:
       - ./data:/app/data
     ports:
       - "4040:4040"
+      - "8888:8888"
 
   streamlit:
     build:
