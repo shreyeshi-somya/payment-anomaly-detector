@@ -1,6 +1,6 @@
 # 🚧 Payment Anomaly Detector
 
-> **Status: Work in Progress** — This project is actively under development. Currently on Step 3: CI/CD setup.
+> **Status: Work in Progress** — This project is actively under development. Currently on Step 4: Aggregation Layer.
 
 A end-to-end data pipeline that detects anomalies in payment transaction metrics, drills down into contributing dimensions, and uses an LLM to generate human-readable explanations. Built with PySpark, DuckDB, Airflow, and Streamlit.
 
@@ -28,7 +28,7 @@ Raw Transactions (5M+)
 |---|-----------|-------------|--------|
 | 1 | **Project Setup** | Git repo, `.gitignore`, Docker/docker-compose (Spark, Airflow, DuckDB), folder structure | ✅ Done |
 | 2 | **Data Generation** | PySpark script to generate ~5M synthetic transactions with 3-4 seeded anomalies | ✅ Done |
-| 3 | **CI/CD** | GitHub Actions for pytest and linting, branch protection rules | Not Started |
+| 3 | **CI/CD** | GitHub Actions for pytest and linting, branch protection rules | ✅ Done |
 | 4 | **Aggregation Layer** | PySpark job: raw transactions to daily metrics by dimension | Not Started |
 | 5 | **Anomaly Detection** | Python module using Z-score / deviation detection | Not Started |
 | 6 | **Dimension Drill-Down** | DuckDB queries to slice anomalies by dimension | Not Started |
@@ -69,5 +69,8 @@ payment-anomaly-detector/
 │   ├── drill_down/             # DuckDB dimension queries (planned)
 │   └── llm/                    # Claude API integration (planned)
 ├── dashboard/                  # Streamlit app (planned)
-└── tests/                      # Unit and integration tests (planned)
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # GitHub Actions CI pipeline (pytest + linting)
+└── tests/                      # Unit and integration tests
 ```
