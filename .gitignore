@@ -1,2 +1,8 @@
 project_plan.txt
 .env
+data/*
+.DS_Store
+.Trash-0/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
