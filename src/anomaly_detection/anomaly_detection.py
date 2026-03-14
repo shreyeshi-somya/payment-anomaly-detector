@@ -1,7 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
-from pyspark.sql.functions import sum, avg, stddev, sum, col, lit
-from pyspark.sql.functions import concat_ws
+from pyspark.sql.functions import sum, avg, stddev, col, lit, concat_ws
 
 
 spark = SparkSession.builder \
