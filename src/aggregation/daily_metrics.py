@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import (sum, avg, max, min, count, countDistinct, round, 
+from pyspark.sql.functions import (sum, avg, countDistinct, round, 
                                    col, when, to_date, date_trunc)
 
 spark = SparkSession.builder \
