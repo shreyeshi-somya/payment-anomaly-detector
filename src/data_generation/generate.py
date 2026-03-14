@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
-    rand, floor, lit, concat, when, col, udf,
+    rand, floor, lit, concat, when, col, udf, monotonically_increasing_id,
     date_add, to_timestamp, month, year, dayofmonth
 )
 from pyspark.sql.functions import round as spark_round
@@ -165,7 +165,9 @@ fraud_spike = df.filter(
     (dayofmonth(col("timestamp")) <= 7) &
     (col("merchant_category") == "electronics")
 )
-df = df.union(fraud_spike).union(fraud_spike)
+fraud_spike1 = fraud_spike.withColumn("transaction_id", random_id_udf(monotonically_increasing_id() + 10000000))
+fraud_spike2 = fraud_spike.withColumn("transaction_id", random_id_udf(monotonically_increasing_id() + 20000000))
+df = df.union(fraud_spike1).union(fraud_spike2)
 
 # Latency degradation - June 2025, 2 weeks, ACH processing time
 df = df.withColumn(
@@ -185,6 +187,7 @@ holiday_spike = df.filter(
     (month(col("timestamp")) == 12) & 
     (dayofmonth(col("timestamp")) <= 14)
 )
+holiday_spike = holiday_spike.withColumn("transaction_id", random_id_udf(monotonically_increasing_id() + 30000000))
 df = df.union(holiday_spike)
 
 print(df.count())
