@@ -69,5 +69,8 @@ payment-anomaly-detector/
 │   ├── drill_down/             # DuckDB dimension queries (planned)
 │   └── llm/                    # Claude API integration (planned)
 ├── dashboard/                  # Streamlit app (planned)
-└── tests/                      # Unit and integration tests (planned)
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # GitHub Actions CI pipeline (pytest + linting)
+└── tests/                      # Unit and integration tests
 ```
