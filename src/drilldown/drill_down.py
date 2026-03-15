@@ -1,5 +1,4 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.window import Window
 from pyspark.sql.functions import col, lit, when
 
 spark = SparkSession.builder \
