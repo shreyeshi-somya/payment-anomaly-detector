@@ -1,6 +1,6 @@
 # 🚧 Payment Anomaly Detector
 
-> **Status: Work in Progress** — This project is actively under development. Currently on Step 6: Dimension Drill-Down.
+> **Status: Work in Progress** — This project is actively under development. Currently on Step 7: LLM Hypothesis Generator.
 
 A end-to-end data pipeline that detects anomalies in payment transaction metrics, drills down into contributing dimensions, and uses an LLM to generate human-readable explanations. Built with PySpark, DuckDB, Airflow, and Streamlit.
 
@@ -31,7 +31,7 @@ Raw Transactions (5M+)
 | 3 | **CI/CD** | GitHub Actions for pytest and linting, branch protection rules | ✅ Done |
 | 4 | **Aggregation Layer** | PySpark job: raw transactions to daily metrics by dimension | ✅ Done |
 | 5 | **Anomaly Detection** | Python module using Z-score / deviation detection | ✅ Done |
-| 6 | **Dimension Drill-Down** | DuckDB queries to slice anomalies by dimension | Not Started |
+| 6 | **Dimension Drill-Down** | DuckDB queries to slice anomalies by dimension | ✅ Done |
 | 7 | **LLM Hypothesis Generator** | Claude API integration to generate explanations for detected anomalies | Not Started |
 | 8 | **Streamlit Dashboard** | Visualize metrics, anomalies, and LLM-generated explanations | Not Started |
 | 9 | **Orchestration** | Airflow DAG tying steps 4-7 together | Not Started |
@@ -66,7 +66,7 @@ payment-anomaly-detector/
 │   ├── data_generation/        # Synthetic transaction generator (config.py, generate.py)
 │   ├── aggregation/            # PySpark aggregation jobs (daily_metrics.py)
 │   ├── anomaly_detection/      # Z-score detection module (anomaly_detection.py)
-│   ├── drill_down/             # DuckDB dimension queries (planned)
+│   ├── drilldown/              # Dimension drill-down (drill_down.py)
 │   └── llm/                    # Claude API integration (planned)
 ├── dashboard/                  # Streamlit app (planned)
 ├── .github/

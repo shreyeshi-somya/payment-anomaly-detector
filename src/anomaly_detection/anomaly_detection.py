@@ -57,7 +57,6 @@ def detect_anomalies(df, group_cols, level_name, metrics):
     
     return result
 
-
 # Define metrics to track
 metrics = [
     ("avg_decline_rate", avg("decline_rate")),
@@ -70,7 +69,7 @@ metrics = [
 df = spark.read.parquet("/app/data/daily_metrics")
 
 # Daily level (no dimensions)
-daily_anomalies = detect_anomalies(df, [], "daily", metrics)
+daily_anomalies = detect_anomalies(df, [], "daily_total", metrics)
 
 # By region
 region_anomalies = detect_anomalies(df, ["region"], "daily_region", metrics)
