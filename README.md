@@ -2,6 +2,8 @@
 
 An end-to-end data pipeline that detects anomalies in payment transaction metrics, drills down into contributing dimensions, and uses an LLM to generate human-readable explanations. Built with PySpark, Airflow, and Streamlit.
 
+[Live Demo](https://payment-anomaly-detector-nbda46tpdfhxr9xttnxhjd.streamlit.app/)
+
 ## How It Works
 
 1. **Data Generation** — PySpark generates ~5M synthetic payment transactions with seeded anomalies (fraud spikes, latency degradation, holiday volume surges)
