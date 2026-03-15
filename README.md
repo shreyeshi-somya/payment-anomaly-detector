@@ -1,10 +1,24 @@
-# 🚧 Payment Anomaly Detector
+# Payment Anomaly Detector
 
-> **Status: Complete** — All planned components have been implemented.
+An end-to-end data pipeline that detects anomalies in payment transaction metrics, drills down into contributing dimensions, and uses an LLM to generate human-readable explanations. Built with PySpark, Airflow, and Streamlit.
 
-A end-to-end data pipeline that detects anomalies in payment transaction metrics, drills down into contributing dimensions, and uses an LLM to generate human-readable explanations. Built with PySpark, DuckDB, Airflow, and Streamlit.
+## How It Works
 
-## Architecture Overview
+1. **Data Generation** — PySpark generates ~5M synthetic payment transactions with seeded anomalies (fraud spikes, latency degradation, holiday volume surges)
+2. **Aggregation** — Raw transactions are aggregated into daily metrics (transaction count, decline rate, latency, volume) grouped by region, merchant category, payment method, merchant size, and card network
+3. **Anomaly Detection** — Z-score analysis with a 30-day rolling window flags metrics that deviate more than 3 standard deviations from the mean
+4. **Dimension Drill-Down** — Daily-level anomalies are joined with dimension-level anomalies to identify which dimensions (e.g. a specific region or payment method) are driving the anomaly
+5. **LLM Explanation** — Claude API generates a hypothesis explaining the root cause based on the dimension breakdown
+6. **Dashboard** — Streamlit app lets you browse detected anomalies, view dimension breakdowns, and trigger AI-powered explanations
+
+## Screenshots
+
+| Streamlit Dashboard | Airflow DAG |
+|---|---|
+| ![Electronics Anomaly](screenshots/electronics_anomaly.png) | ![Airflow](screenshots/airflow.png) |
+| ![Visa Anomaly](screenshots/visa_anomaly.png) | |
+
+## Architecture
 
 ```
 Raw Transactions (5M+)
@@ -15,73 +29,67 @@ Raw Transactions (5M+)
         |
    [ Anomaly Detection (Z-score) ]
         |
-   [ DuckDB Drill-Down ]
+   [ Dimension Drill-Down ]
         |
    [ Claude LLM Hypothesis Generator ]
         |
    [ Streamlit Dashboard ]
 ```
 
-## Planned Components
-
-| # | Component | Description | Status |
-|---|-----------|-------------|--------|
-| 1 | **Project Setup** | Git repo, `.gitignore`, Docker/docker-compose (Spark, Airflow, DuckDB), folder structure | ✅ Done |
-| 2 | **Data Generation** | PySpark script to generate ~5M synthetic transactions with 3-4 seeded anomalies | ✅ Done |
-| 3 | **CI/CD** | GitHub Actions for pytest and linting, branch protection rules | ✅ Done |
-| 4 | **Aggregation Layer** | PySpark job: raw transactions to daily metrics by dimension | ✅ Done |
-| 5 | **Anomaly Detection** | Python module using Z-score / deviation detection | ✅ Done |
-| 6 | **Dimension Drill-Down** | DuckDB queries to slice anomalies by dimension | ✅ Done |
-| 7 | **LLM Hypothesis Generator** | Claude API integration to generate explanations for detected anomalies | ✅ Done |
-| 8 | **Streamlit Dashboard** | Visualize metrics, anomalies, and LLM-generated explanations | ✅ Done |
-| 9 | **Orchestration** | Airflow DAG tying steps 4-7 together | ✅ Done |
+Orchestrated via an **Airflow DAG** that runs the aggregation, detection, and drill-down steps daily.
 
 ## Tech Stack
 
 - **Processing**: PySpark
-- **Anomaly Detection**: Python (Z-score / statistical methods)
-- **Analytical Queries**: DuckDB
+- **Anomaly Detection**: Z-score (30-day rolling window)
 - **LLM**: Claude API (Anthropic)
 - **Dashboard**: Streamlit
 - **Orchestration**: Apache Airflow
 - **Infrastructure**: Docker, docker-compose
+- **CI/CD**: GitHub Actions
 
 ## Getting Started
 
-> Setup instructions will be added as the project progresses.
+```bash
+# Clone the repo
+git clone https://github.com/shreyeshi-somya/payment-anomaly-detector.git
+cd payment-anomaly-detector
+
+# Set up environment
+cp .env.example .env  # Add your ANTHROPIC_API_KEY
+
+# Start all services
+docker-compose up --build
+```
+
+- **Streamlit Dashboard**: http://localhost:8501
+- **Airflow UI**: http://localhost:8080
+- **Jupyter Notebook**: http://localhost:8888
 
 ## Project Structure
 
 ```
 payment-anomaly-detector/
-├── README.md
-├── project_plan.txt
-├── requirements.txt
-├── .gitignore
 ├── docker-compose.yml
 ├── docker/
-│   ├── Dockerfile.spark        # Spark + Jupyter container
-│   └── Dockerfile.airflow      # Airflow with PySpark
-├── dags/                       # Airflow DAGs (anomaly_pipeline.py)
+│   ├── Dockerfile.spark          # Spark + Jupyter container
+│   └── Dockerfile.airflow        # Airflow with PySpark
+├── dags/
+│   └── anomaly_pipeline.py       # Airflow DAG: aggregate -> detect -> drilldown
 ├── src/
-│   ├── data_generation/        # Synthetic transaction generator (config.py, generate.py)
-│   ├── aggregation/            # PySpark aggregation jobs (daily_metrics.py)
-│   ├── anomaly_detection/      # Z-score detection module (anomaly_detection.py)
-│   ├── drilldown/              # Dimension drill-down (drill_down.py)
-│   └── llm_explainer/           # Claude API integration (explainer.py)
-├── data/
-│   ├── transactions/           # Raw synthetic transactions (parquet)
-│   ├── daily_metrics/          # Aggregated daily metrics (parquet)
-│   ├── anomalies/              # Detected anomalies (parquet)
-│   └── drilldown/              # Dimension drill-down results (parquet)
-├── streamlit/                  # Streamlit dashboard
-│   ├── app.py
+│   ├── data_generation/          # Synthetic transaction generator
+│   ├── aggregation/              # Daily metrics aggregation
+│   ├── anomaly_detection/        # Z-score anomaly detection
+│   ├── drilldown/                # Dimension drill-down
+│   └── llm_explainer/            # Claude API integration
+├── streamlit/
+│   ├── app.py                    # Dashboard application
 │   ├── requirements.txt
-│   └── data/
-│       ├── anomalies/          # Anomalies data for Streamlit Cloud
-│       └── drilldown/          # Drilldown data for Streamlit Cloud
+│   └── data/                     # Pre-computed data for Streamlit Cloud
+├── screenshots/                  # App screenshots
+├── data/                         # Generated pipeline data (gitignored)
 ├── .github/
 │   └── workflows/
-│       └── ci.yml              # GitHub Actions CI pipeline (pytest + linting)
-└── tests/                      # Unit and integration tests
+│       └── ci.yml                # CI pipeline (pytest + linting)
+└── tests/
 ```
