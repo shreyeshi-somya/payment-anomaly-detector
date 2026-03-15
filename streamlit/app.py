@@ -23,11 +23,21 @@ st.markdown("""
 
 st.title("Payment Anomaly Detector")
 
+st.markdown("""
+This tool analyzes **5M+ synthetic payment transactions** to surface unusual patterns in key metrics
+like decline rates, processing latency, and transaction volume. Anomalies are detected using **Z-score analysis**
+with a 30-day rolling window, then broken down by dimensions (region, payment method, merchant category, etc.)
+to pinpoint root causes. Select an anomaly below and use the **AI Hypothesis** feature to get a
+Claude-powered explanation of what might have caused it.
+""")
+
+st.divider()
+
 # Load data - works for both Docker and Streamlit Cloud
-if os.path.exists('/app/data'):
-    data_path = '/app/data'
-else:
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data')
+data_path = os.path.join(os.path.dirname(__file__), 'data')
+
+anomalies = pd.read_parquet(os.path.join(data_path, "anomalies"))
+drilldown = pd.read_parquet(os.path.join(data_path, "drilldown"))
 
 anomalies = pd.read_parquet(os.path.join(data_path, "anomalies"))
 drilldown = pd.read_parquet(os.path.join(data_path, "drilldown"))
