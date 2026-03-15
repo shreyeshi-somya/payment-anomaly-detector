@@ -12,7 +12,6 @@ anomalies = spark.read.parquet("/app/data/anomalies")
 daily_anomalies = anomalies.filter(col("level") == "daily_total")
 dimension_anomalies = anomalies.filter(col("level") != "daily_total")
 
-
 drilldown = daily_anomalies.alias("d").join(
     dimension_anomalies.alias("dim"),
     (col("d.transaction_date") == col("dim.transaction_date")) & 
