@@ -6,6 +6,8 @@ ENV JAVA_HOME=/usr/lib/jvm/default-java
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir pyspark==3.5.0 jupyter
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir jupyter
 
 CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--NotebookApp.token=", "--NotebookApp.password="]

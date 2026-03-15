@@ -3,3 +3,5 @@ duckdb
 anthropic
 pandas
 numpy
+matplotlib
+pyarrow
