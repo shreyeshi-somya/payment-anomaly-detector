@@ -1,6 +1,7 @@
 project_plan.txt
 .env
-data/*
+/data/*
+!streamlit/data/
 .DS_Store
 .Trash-0/
 .ipynb_checkpoints/
