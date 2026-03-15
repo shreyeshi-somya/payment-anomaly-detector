@@ -74,7 +74,12 @@ payment-anomaly-detector/
 │   ├── daily_metrics/          # Aggregated daily metrics (parquet)
 │   ├── anomalies/              # Detected anomalies (parquet)
 │   └── drilldown/              # Dimension drill-down results (parquet)
-├── streamlit/                  # Streamlit dashboard (app.py)
+├── streamlit/                  # Streamlit dashboard
+│   ├── app.py
+│   ├── requirements.txt
+│   └── data/
+│       ├── anomalies/          # Anomalies data for Streamlit Cloud
+│       └── drilldown/          # Drilldown data for Streamlit Cloud
 ├── .github/
 │   └── workflows/
 │       └── ci.yml              # GitHub Actions CI pipeline (pytest + linting)
