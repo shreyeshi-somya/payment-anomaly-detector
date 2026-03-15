@@ -1,6 +1,6 @@
 # 🚧 Payment Anomaly Detector
 
-> **Status: Work in Progress** — This project is actively under development. Currently on Step 8: Streamlit Dashboard.
+> **Status: Work in Progress** — This project is actively under development. Currently on Step 9: Orchestration.
 
 A end-to-end data pipeline that detects anomalies in payment transaction metrics, drills down into contributing dimensions, and uses an LLM to generate human-readable explanations. Built with PySpark, DuckDB, Airflow, and Streamlit.
 
@@ -33,7 +33,7 @@ Raw Transactions (5M+)
 | 5 | **Anomaly Detection** | Python module using Z-score / deviation detection | ✅ Done |
 | 6 | **Dimension Drill-Down** | DuckDB queries to slice anomalies by dimension | ✅ Done |
 | 7 | **LLM Hypothesis Generator** | Claude API integration to generate explanations for detected anomalies | ✅ Done |
-| 8 | **Streamlit Dashboard** | Visualize metrics, anomalies, and LLM-generated explanations | Not Started |
+| 8 | **Streamlit Dashboard** | Visualize metrics, anomalies, and LLM-generated explanations | ✅ Done |
 | 9 | **Orchestration** | Airflow DAG tying steps 4-7 together | Not Started |
 
 ## Tech Stack
@@ -68,7 +68,7 @@ payment-anomaly-detector/
 │   ├── anomaly_detection/      # Z-score detection module (anomaly_detection.py)
 │   ├── drilldown/              # Dimension drill-down (drill_down.py)
 │   └── llm_explainer/           # Claude API integration (explainer.py)
-├── dashboard/                  # Streamlit app (planned)
+├── streamlit/                  # Streamlit dashboard (app.py)
 ├── .github/
 │   └── workflows/
 │       └── ci.yml              # GitHub Actions CI pipeline (pytest + linting)
