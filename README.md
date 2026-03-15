@@ -1,6 +1,6 @@
 # 🚧 Payment Anomaly Detector
 
-> **Status: Work in Progress** — This project is actively under development. Currently on Step 9: Orchestration.
+> **Status: Complete** — All planned components have been implemented.
 
 A end-to-end data pipeline that detects anomalies in payment transaction metrics, drills down into contributing dimensions, and uses an LLM to generate human-readable explanations. Built with PySpark, DuckDB, Airflow, and Streamlit.
 
@@ -34,7 +34,7 @@ Raw Transactions (5M+)
 | 6 | **Dimension Drill-Down** | DuckDB queries to slice anomalies by dimension | ✅ Done |
 | 7 | **LLM Hypothesis Generator** | Claude API integration to generate explanations for detected anomalies | ✅ Done |
 | 8 | **Streamlit Dashboard** | Visualize metrics, anomalies, and LLM-generated explanations | ✅ Done |
-| 9 | **Orchestration** | Airflow DAG tying steps 4-7 together | Not Started |
+| 9 | **Orchestration** | Airflow DAG tying steps 4-7 together | ✅ Done |
 
 ## Tech Stack
 
@@ -60,8 +60,9 @@ payment-anomaly-detector/
 ├── .gitignore
 ├── docker-compose.yml
 ├── docker/
-│   └── Dockerfile.spark        # Spark + Jupyter container
-├── dags/                       # Airflow DAGs (planned)
+│   ├── Dockerfile.spark        # Spark + Jupyter container
+│   └── Dockerfile.airflow      # Airflow with PySpark
+├── dags/                       # Airflow DAGs (anomaly_pipeline.py)
 ├── src/
 │   ├── data_generation/        # Synthetic transaction generator (config.py, generate.py)
 │   ├── aggregation/            # PySpark aggregation jobs (daily_metrics.py)
