@@ -1,7 +1,14 @@
 import streamlit as st
 import pandas as pd
 import sys
-sys.path.append('/app/src')
+import os
+
+# Add src to path - works for both Docker and Streamlit Cloud
+if os.path.exists('/app/src'):
+    sys.path.append('/app/src')
+else:
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+
 from llm_explainer.explainer import explain_anomaly
 
 st.set_page_config(layout="wide")
@@ -16,9 +23,14 @@ st.markdown("""
 
 st.title("Payment Anomaly Detector")
 
-# Load data
-anomalies = pd.read_parquet("/app/data/anomalies")
-drilldown = pd.read_parquet("/app/data/drilldown")
+# Load data - works for both Docker and Streamlit Cloud
+if os.path.exists('/app/data'):
+    data_path = '/app/data'
+else:
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'data')
+
+anomalies = pd.read_parquet(os.path.join(data_path, "anomalies"))
+drilldown = pd.read_parquet(os.path.join(data_path, "drilldown"))
 
 # Show only daily-level anomalies
 daily_anomalies = anomalies[anomalies['level'] == 'daily_total'].copy()
