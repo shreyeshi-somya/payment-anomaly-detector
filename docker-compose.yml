@@ -68,9 +68,12 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.streamlit
+    env_file:
+      - .env  
     volumes:
       - ./streamlit:/app
       - ./data:/app/data
+      - ./src:/app/src
     ports:
       - "8501:8501"  
 
