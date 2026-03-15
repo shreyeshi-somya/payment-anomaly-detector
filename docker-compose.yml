@@ -52,6 +52,8 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.spark
+    env_file:
+      - .env  
     image: bitnami/spark:3
     environment:
       - SPARK_MODE=master
