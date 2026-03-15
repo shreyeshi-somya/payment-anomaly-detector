@@ -69,6 +69,11 @@ payment-anomaly-detector/
 │   ├── anomaly_detection/      # Z-score detection module (anomaly_detection.py)
 │   ├── drilldown/              # Dimension drill-down (drill_down.py)
 │   └── llm_explainer/           # Claude API integration (explainer.py)
+├── data/
+│   ├── transactions/           # Raw synthetic transactions (parquet)
+│   ├── daily_metrics/          # Aggregated daily metrics (parquet)
+│   ├── anomalies/              # Detected anomalies (parquet)
+│   └── drilldown/              # Dimension drill-down results (parquet)
 ├── streamlit/                  # Streamlit dashboard (app.py)
 ├── .github/
 │   └── workflows/
